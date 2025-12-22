@@ -1,0 +1,246 @@
+C51 COMPILER V9.54   MAIN                                                                  08/24/2024 01:45:24 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          
+   4          //#include "LEDSS.H"
+   5          #include "XPT2046.H"
+   6          //#include "KEY.H"
+   7          #include "TIMER0.H"
+   8          #include "LCD1602.H"
+   9          //#include "DELAY.H"
+  10          
+  11          sbit led1=P1^0;
+  12          sbit led2=P1^1;
+  13          sbit led3=P1^2;
+  14          
+  15          
+  16          unsigned char Counter,Compare;  //计数值和比较值，用于输出PWM
+  17          unsigned char a,b;
+  18          unsigned char c,d,e;
+  19          unsigned char Speed;
+  20          unsigned char tem;
+  21          
+  22          
+  23          void main()
+  24          {
+  25   1      
+  26   1      
+  27   1                      Timer0_Init();
+  28   1      //       LCD_Init();
+  29   1                      P0=0XFF;
+  30   1                      P3=0XFF;
+  31   1                      P1=0XFF;
+  32   1                      P2=0XFF;
+  33   1           a=0;
+  34   1           b=0;
+  35   1           c=0;
+  36   1              tem=0;
+  37   1              Speed=1;
+  38   1          Compare=25;
+  39   1              while(1)
+  40   1              {
+  41   2                      
+  42   2                      
+  43   2      //                      tem=XPT2046_ReadAD(0xEC);
+  44   2      
+  45   2              
+  46   2              if(P3_0==0)
+  47   2                      
+  48   2              {   a=1;        
+  49   3      
+  50   3              }               
+  51   2              if(P3_0==1)
+  52   2                      
+  53   2              {                       
+  54   3                         a=0;
+C51 COMPILER V9.54   MAIN                                                                  08/24/2024 01:45:24 PAGE 2   
+
+  55   3              }       
+  56   2              
+  57   2              
+  58   2              
+  59   2              if(P3_1==0)
+  60   2                      
+  61   2              {   b=1;        
+  62   3      
+  63   3              }               
+  64   2              if(P3_1==1)
+  65   2                      
+  66   2              {                       
+  67   3                b=0;
+  68   3              }       
+  69   2              
+  70   2              
+  71   2              
+  72   2              if(P3_2==0)
+  73   2                      
+  74   2              {   c=1;        
+  75   3      
+  76   3              }               
+  77   2              if(P3_2==1)
+  78   2                      
+  79   2              {                       
+  80   3                         c=0;
+  81   3              }       
+  82   2              
+  83   2              
+  84   2              
+  85   2              if(P3_3==0)
+  86   2                      
+  87   2              {   d=1;        
+  88   3      
+  89   3              }               
+  90   2              if(P3_3==1)
+  91   2                      
+  92   2              {                       
+  93   3                         d=0;
+  94   3              }       
+  95   2              
+  96   2              
+  97   2              
+  98   2              if(P3_4==0)
+  99   2              {
+ 100   3                      
+ 101   3                      while(P3_4==0);
+ 102   3                      if(P3_4==1);
+ 103   3                      {
+ 104   4                              
+ 105   4                              Speed++;
+ 106   4                              Speed%=5;
+ 107   4                              if(Speed==0){Compare=0;}        //设置比较值，改变PWM占空比
+ 108   4                              if(Speed==1){Compare=25;}
+ 109   4                              if(Speed==2){Compare=50;}
+ 110   4                              if(Speed==3){Compare=75;}
+ 111   4                              if(Speed==4){Compare=100;}
+ 112   4                      }
+ 113   3      
+ 114   3                      }
+ 115   2              
+ 116   2                      
+C51 COMPILER V9.54   MAIN                                                                  08/24/2024 01:45:24 PAGE 3   
+
+ 117   2              if(P3_5==0)
+ 118   2              {
+ 119   3                      
+ 120   3                      while(P3_5==0);
+ 121   3                      if(P3_5==1);
+ 122   3                      {
+ 123   4                              
+ 124   4                              
+ 125   4                              Speed--;
+ 126   4                              Speed%=5;
+ 127   4                              if(Speed==0){Compare=0;}        //设置比较值，改变PWM占空比
+ 128   4                              if(Speed==1){Compare=25;}
+ 129   4                              if(Speed==2){Compare=50;}
+ 130   4                              if(Speed==3){Compare=75;}
+ 131   4                              if(Speed==4){Compare=100;}
+ 132   4                              
+ 133   4                      }
+ 134   3      
+ 135   3                      }
+ 136   2      
+ 137   2      
+ 138   2      
+ 139   2                      
+ 140   2      
+ 141   2              }
+ 142   1      }
+ 143          
+ 144                  
+ 145                  
+ 146                  
+ 147          
+ 148          
+ 149          
+ 150          
+ 151          void Timer0_Routine() interrupt 1
+ 152          {
+ 153   1              TL0 = 0x9C;             //设置定时初值
+ 154   1              TH0 = 0xFF;             //设置定时初值
+ 155   1              Counter++;
+ 156   1              Counter%=100;   //计数值变化范围限制在0~99
+ 157   1      
+ 158   1              if(Counter<Compare)     //计数值小于比较值
+ 159   1              {
+ 160   2                      if(a==1)
+ 161   2                      {
+ 162   3                      led1=0;
+ 163   3                      }                       //输出1
+ 164   2                      
+ 165   2                      if(b==1)
+ 166   2                      {
+ 167   3                      led2=0;
+ 168   3                      }                       //输出1
+ 169   2                      
+ 170   2                      if(c==1)
+ 171   2                      {
+ 172   3                      led3=0;
+ 173   3                      }                       //输出1
+ 174   2                      
+ 175   2                      }                       //输出1
+ 176   1              
+ 177   1                      
+ 178   1                      if(d==1)
+C51 COMPILER V9.54   MAIN                                                                  08/24/2024 01:45:24 PAGE 4   
+
+ 179   1                      {
+ 180   2                        if(P1_3==1)
+ 181   2                      
+ 182   2                                {  
+ 183   3                                        if(a==1)
+ 184   3                                        led1=0;
+ 185   3                                        if(b==1)
+ 186   3                                        led2=0;
+ 187   3                                        if(c==1)
+ 188   3                                        led3=0;
+ 189   3                                        
+ 190   3      //                              led1=0; 
+ 191   3      //                              led2=0; 
+ 192   3      //                              led3=0; 
+ 193   3                                }             
+ 194   2      
+ 195   2                      if(P1_3==0)
+ 196   2                                      
+ 197   2                              { 
+ 198   3                                      led1=1; 
+ 199   3                                      led2=1; 
+ 200   3                                      led3=1; 
+ 201   3                              }               
+ 202   2      
+ 203   2                        }                     //输出1
+ 204   1                      
+ 205   1                        
+ 206   1                      
+ 207   1      
+ 208   1              
+ 209   1              else            //计数值大于比较值
+ 210   1                      
+ 211   1              {
+ 212   2                      led1=1;         
+ 213   2                      led2=1;
+ 214   2                      led3=1;
+ 215   2              }
+ 216   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    294    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
