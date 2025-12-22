@@ -13,7 +13,7 @@ sbit led2=P1^1;
 sbit led3=P1^2;
 
 
-unsigned char Counter,Compare;	//¼ÆÊıÖµºÍ±È½ÏÖµ£¬ÓÃÓÚÊä³öPWM
+unsigned char Counter,Compare;	//è®¡æ•°å€¼å’Œæ¯”è¾ƒå€¼ï¼Œç”¨äºè¾“å‡ºPWM
 unsigned char a,b;
 unsigned char c,d,e;
 unsigned char Speed;
@@ -104,7 +104,7 @@ void main()
 			
 			Speed++;
 			Speed%=5;
-			if(Speed==0){Compare=0;}	//ÉèÖÃ±È½ÏÖµ£¬¸Ä±äPWMÕ¼¿Õ±È
+			if(Speed==0){Compare=0;}	//è®¾ç½®æ¯”è¾ƒå€¼ï¼Œæ”¹å˜PWMå ç©ºæ¯”
 			if(Speed==1){Compare=25;}
 			if(Speed==2){Compare=50;}
 			if(Speed==3){Compare=75;}
@@ -124,7 +124,7 @@ void main()
 			
 			Speed--;
 			Speed%=5;
-			if(Speed==0){Compare=0;}	//ÉèÖÃ±È½ÏÖµ£¬¸Ä±äPWMÕ¼¿Õ±È
+			if(Speed==0){Compare=0;}	//è®¾ç½®æ¯”è¾ƒå€¼ï¼Œæ”¹å˜PWMå ç©ºæ¯”
 			if(Speed==1){Compare=25;}
 			if(Speed==2){Compare=50;}
 			if(Speed==3){Compare=75;}
@@ -150,29 +150,29 @@ void main()
 
 void Timer0_Routine() interrupt 1
 {
-	TL0 = 0x9C;		//ÉèÖÃ¶¨Ê±³õÖµ
-	TH0 = 0xFF;		//ÉèÖÃ¶¨Ê±³õÖµ
+	TL0 = 0x9C;		//è®¾ç½®å®šæ—¶åˆå€¼
+	TH0 = 0xFF;		//è®¾ç½®å®šæ—¶åˆå€¼
 	Counter++;
-	Counter%=100;	//¼ÆÊıÖµ±ä»¯·¶Î§ÏŞÖÆÔÚ0~99
+	Counter%=100;	//è®¡æ•°å€¼å˜åŒ–èŒƒå›´é™åˆ¶åœ¨0~99
 
-	if(Counter<Compare)	//¼ÆÊıÖµĞ¡ÓÚ±È½ÏÖµ
+	if(Counter<Compare)	//è®¡æ•°å€¼å°äºæ¯”è¾ƒå€¼
 	{
 		if(a==1)
 		{
 		led1=0;
-		}			//Êä³ö1
+		}			//è¾“å‡º1
 		
 		if(b==1)
 		{
 		led2=0;
-		}			//Êä³ö1
+		}			//è¾“å‡º1
 		
 		if(c==1)
 		{
 		led3=0;
-		}			//Êä³ö1
+		}			//è¾“å‡º1
 		
-		}			//Êä³ö1
+		}			//è¾“å‡º1
 	
 		
 		if(d==1)
@@ -200,13 +200,13 @@ void Timer0_Routine() interrupt 1
 				led3=1;	
 			}		
 
-		  }			//Êä³ö1
+		  }			//è¾“å‡º1
 		
 		  
 		
 
 	
-	else		//¼ÆÊıÖµ´óÓÚ±È½ÏÖµ
+	else		//è®¡æ•°å€¼å¤§äºæ¯”è¾ƒå€¼
 		
 	{
 		led1=1;		
@@ -214,3 +214,4 @@ void Timer0_Routine() interrupt 1
 		led3=1;
 	}
 }
+
